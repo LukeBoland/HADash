@@ -172,15 +172,14 @@ function moveGauge(gaugeobj, newStart, newEnd, duration, easingFunc) {
       gaugeobj.endAngle = vals[1];
       var arc_fg = gaugeobj.svg.getElementsByTagName('path')[1];
       arc_fg.setAttributeNS(null, "d", pathDescription);
-
       var circle = gaugeobj.svg.getElementsByTagName('circle')[0];
-   
       circle.setAttributeNS(null, "cx", tmpCircle1.x);
       circle.setAttributeNS(null, "cy", tmpCircle1.y);
       var circle2 = gaugeobj.svg.getElementsByTagName('circle')[1];
-      
       circle2.setAttributeNS(null, "cx", tmpCircle2.x);
       circle2.setAttributeNS(null, "cy", tmpCircle2.y);
+      var text = gaugeobj.svg.getElementsByTagName('text')[0];
+      text.textContent = vals[0].toFixed(1);
     }
     else {
       clearInterval(gaugeobj.animation);
@@ -222,6 +221,16 @@ function createGauge(parentElem, radius, start, end, min, max, color, strokeWidt
       break;
   } 
   gaugeobj.svg = createGaugeSVG(gaugeobj.centerX, gaugeobj.centerY, radius, gaugeobj.gaugeStartAngle, gaugeobj.gaugeEndAngle, color, strokeWidth, type);
+  var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  text.setAttributeNS(null, "x", gaugeobj.centerX);
+  text.setAttributeNS(null, "y", gaugeobj.centerY);
+  text.setAttributeNS(null, "alignment-baseline", "middle");
+  text.setAttributeNS(null, "font-size", radius * .25);
+  text.setAttributeNS(null, "stroke-width", "0");
+  text.setAttributeNS(null, "stroke", "#000");
+  text.setAttributeNS(null, "text-anchor", "middle");
+  text.textContent = start.toFixed(1);
+  gaugeobj.svg.appendChild(text);
   parentElem.appendChild(gaugeobj.svg);
   return gaugeobj;
 }
