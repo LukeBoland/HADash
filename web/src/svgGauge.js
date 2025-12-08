@@ -22,11 +22,15 @@ function describeArc(x, y, radius, startAngle, endAngle){
   var end = polarToCartesian(x, y, radius, startAngle);
 
   var largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+console.log(startAngle, endAngle);
 
   var d = [
     "M", start.x, start.y, 
     "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y
   ].join(" ");
+  if (startAngle == 0) 
+    console.log(d);
+    
   return d;       
 }
 
@@ -146,11 +150,11 @@ function moveGauge(gaugeobj, newStart, newEnd, duration, easingFunc) {
           var pathDescription = describeArc(gaugeobj.centerX, gaugeobj.centerY, gaugeobj.radius, (gaugeobj.degrees * (vals[0] - gaugeobj.min) / (gaugeobj.max - gaugeobj.min)) + 45, (gaugeobj.degrees * (vals[1] - gaugeobj.min) / (gaugeobj.max - gaugeobj.min)) + 45);
           break;
         case 'semi':
-          var pathDescription = describeArc(gaugeobj.centerX, gaugeobj.centerY, gaugeobj.radius, vals[0]/2, vals[1]/2);
+          var pathDescription = describeArc(gaugeobj.centerX, gaugeobj.centerY, gaugeobj.radius, (gaugeobj.degrees * (vals[0] - gaugeobj.min) / (gaugeobj.max - gaugeobj.min)) + 90, (gaugeobj.degrees * (vals[1] - gaugeobj.min) / (gaugeobj.max - gaugeobj.min)) + 90);
           break;
         case 'circle':
         default:
-          var pathDescription = describeArc(gaugeobj.centerX, gaugeobj.centerY, gaugeobj.radius, vals[0], vals[1]);
+          var pathDescription = describeArc(gaugeobj.centerX, gaugeobj.centerY, gaugeobj.radius, (gaugeobj.degrees * (vals[0] - gaugeobj.min) / (gaugeobj.max - gaugeobj.min)), (gaugeobj.degrees * (vals[1] - gaugeobj.min) / (gaugeobj.max - gaugeobj.min)));
           break;
       }
       gaugeobj.startAngle = vals[0];
@@ -178,26 +182,26 @@ function createGauge(parentElem, radius, start, end, min, max, color, strokeWidt
   gaugeobj.max = max;
   gaugeobj.color = color;
   gaugeobj.strokeWidth = strokeWidth;
-  gaugeobj.startAngleTarget = 0;
-  gaugeobj.endAngleTarget = 0;
   gaugeobj.animation = null;
   switch(type) {
     case 'arch':
       gaugeobj.degrees = 315-45;
-      gaugeStartAngle = (gaugeobj.degrees * (start - min) / (max - min)) + 45;
-      gaugeEndAngle = (gaugeobj.degrees * (end - min) / (max - min)) + 45;
+      gaugeobj.gaugeStartAngle = (gaugeobj.degrees * (start - min) / (max - min)) + 45;
+      gaugeobj.gaugeEndAngle = (gaugeobj.degrees * (end - min) / (max - min)) + 45;
       break;
     case 'semi':
-      gaugeobj.startAngleTarget = 0;
-      gaugeobj.endAngleTarget = 180;
+      gaugeobj.degrees = 180;
+      gaugeobj.gaugeStartAngle = (gaugeobj.degrees * (start - min) / (max - min)) +90;
+      gaugeobj.gaugeEndAngle = (gaugeobj.degrees * (end - min) / (max - min)) + 90;
       break;
     case 'circle':
     default:
-      gaugeobj.startAngleTarget = 0;
-      gaugeobj.endAngleTarget = 360;
+      gaugeobj.degrees = 359.9;
+      gaugeobj.gaugeStartAngle = (gaugeobj.degrees * (start - min) / (max - min));
+      gaugeobj.gaugeEndAngle = (gaugeobj.degrees * (end - min) / (max - min));
       break;
   } 
-  gaugeobj.svg = createGaugeSVG(gaugeobj.centerX, gaugeobj.centerY, radius, gaugeStartAngle, gaugeEndAngle, color, strokeWidth, type);
+  gaugeobj.svg = createGaugeSVG(gaugeobj.centerX, gaugeobj.centerY, radius, gaugeobj.gaugeStartAngle, gaugeobj.gaugeEndAngle, color, strokeWidth, type);
   parentElem.appendChild(gaugeobj.svg);
   return gaugeobj;
 }
@@ -210,17 +214,16 @@ function createGaugeSVG(centerX, centerY, radius, startAngle, endAngle, color, s
   svg.setAttribute('height', 2 * (radius + strokeWidth));
   svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
   var arc_bg = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  //arc_bg.setAttributeNS(null, "d", pathDescription);
   switch(type) {
     case 'arch':
       arc_bg.setAttributeNS(null, "d", describeArc(centerX, centerY, radius, 45, 315));
       break;
       case 'semi':
-      arc_bg.setAttributeNS(null, "d", describeArc(centerX, centerY, radius, 0, 180));
+      arc_bg.setAttributeNS(null, "d", describeArc(centerX, centerY, radius, 90, 270));
       break;
     case 'circle':
     default:
-      arc_bg.setAttributeNS(null, "d", describeArc(centerX, centerY, radius, 0, 360));
+      arc_bg.setAttributeNS(null, "d", describeArc(centerX, centerY, radius, 0, 359.9));
       break;
   }
   arc_bg.setAttributeNS(null, "stroke", "#aaa");
