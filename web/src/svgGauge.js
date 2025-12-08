@@ -130,6 +130,11 @@ function moveGauge(gaugeobj, newStart, newEnd, duration, easingFunc) {
   if (newEnd > gaugeobj.max) {
     newEnd = gaugeobj.max;
   }
+  if (newEnd < newStart) {
+    let tmp = newStart;
+    newStart = newEnd;
+    newEnd = tmp;
+  }
   var startRange = newStart - oldStart;
   var endRange = newEnd - oldEnd;
   var frameArray = [];
