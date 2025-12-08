@@ -1,0 +1,9 @@
+# Ignore backup directory created during local edits
+Backup/
+
+# Common ignores
+node_modules/
+dist/
+*.log
+*.tmp
+index.html
