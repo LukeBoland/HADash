@@ -149,23 +149,38 @@ function moveGauge(gaugeobj, newStart, newEnd, duration, easingFunc) {
   gaugeobj.animation = setInterval(() => {
     if (frameArray.length > 0) {
       var vals = frameArray.shift();
-      
+      let tmpCircle1, tmpCircle2;
       switch(gaugeobj.type) {
         case 'arch':
           var pathDescription = describeArc(gaugeobj.centerX, gaugeobj.centerY, gaugeobj.radius, (gaugeobj.degrees * (vals[0] - gaugeobj.min) / (gaugeobj.max - gaugeobj.min)) + 45, (gaugeobj.degrees * (vals[1] - gaugeobj.min) / (gaugeobj.max - gaugeobj.min)) + 45);
+          tmpCircle1 = polarToCartesian(gaugeobj.centerX, gaugeobj.centerY, gaugeobj.radius, (gaugeobj.degrees * (vals[0] - gaugeobj.min) / (gaugeobj.max - gaugeobj.min)) + 45 + 180);
+          tmpCircle2 = polarToCartesian(gaugeobj.centerX, gaugeobj.centerY, gaugeobj.radius, (gaugeobj.degrees * (vals[1] - gaugeobj.min) / (gaugeobj.max - gaugeobj.min)) + 45 + 180);
           break;
         case 'semi':
           var pathDescription = describeArc(gaugeobj.centerX, gaugeobj.centerY, gaugeobj.radius, (gaugeobj.degrees * (vals[0] - gaugeobj.min) / (gaugeobj.max - gaugeobj.min)) + 90, (gaugeobj.degrees * (vals[1] - gaugeobj.min) / (gaugeobj.max - gaugeobj.min)) + 90);
+          tmpCircle1 = polarToCartesian(gaugeobj.centerX, gaugeobj.centerY, gaugeobj.radius, (gaugeobj.degrees * (vals[0] - gaugeobj.min) / (gaugeobj.max - gaugeobj.min)) + 90+ 180);
+          tmpCircle2 = polarToCartesian(gaugeobj.centerX, gaugeobj.centerY, gaugeobj.radius, (gaugeobj.degrees * (vals[1] - gaugeobj.min) / (gaugeobj.max - gaugeobj.min)) + 90+ 180);
           break;
         case 'circle':
         default:
           var pathDescription = describeArc(gaugeobj.centerX, gaugeobj.centerY, gaugeobj.radius, (gaugeobj.degrees * (vals[0] - gaugeobj.min) / (gaugeobj.max - gaugeobj.min)), (gaugeobj.degrees * (vals[1] - gaugeobj.min) / (gaugeobj.max - gaugeobj.min)));
+          tmpCircle1 = polarToCartesian(gaugeobj.centerX, gaugeobj.centerY, gaugeobj.radius, (gaugeobj.degrees * (vals[0] - gaugeobj.min) / (gaugeobj.max - gaugeobj.min)) + 180);
+          tmpCircle2 = polarToCartesian(gaugeobj.centerX, gaugeobj.centerY, gaugeobj.radius, (gaugeobj.degrees * (vals[1] - gaugeobj.min) / (gaugeobj.max - gaugeobj.min)) + 180);
           break;
       }
       gaugeobj.startAngle = vals[0];
       gaugeobj.endAngle = vals[1];
       var arc_fg = gaugeobj.svg.getElementsByTagName('path')[1];
       arc_fg.setAttributeNS(null, "d", pathDescription);
+
+      var circle = gaugeobj.svg.getElementsByTagName('circle')[0];
+   
+      circle.setAttributeNS(null, "cx", tmpCircle1.x);
+      circle.setAttributeNS(null, "cy", tmpCircle1.y);
+      var circle2 = gaugeobj.svg.getElementsByTagName('circle')[1];
+      
+      circle2.setAttributeNS(null, "cx", tmpCircle2.x);
+      circle2.setAttributeNS(null, "cy", tmpCircle2.y);
     }
     else {
       clearInterval(gaugeobj.animation);
@@ -247,5 +262,19 @@ function createGaugeSVG(centerX, centerY, radius, startAngle, endAngle, color, s
   arc_fg.setAttributeNS(null, "transform", "rotate(180)");
   arc_fg.setAttributeNS(null, "transform-origin", centerX + " " + centerY);
   svg.appendChild(arc_fg);
+  var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  let tmp = polarToCartesian(centerX, centerY, radius, startAngle+180);
+  circle.setAttributeNS(null, "cx", tmp.x);
+  circle.setAttributeNS(null, "cy", tmp.y);
+  circle.setAttributeNS(null, "r", strokeWidth * .35);
+  circle.setAttributeNS(null, "fill", "white");
+  svg.appendChild(circle);
+  var circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  tmp = polarToCartesian(centerX, centerY, radius, endAngle+180);
+  circle2.setAttributeNS(null, "cx", tmp.x);
+  circle2.setAttributeNS(null, "cy", tmp.y);
+  circle2.setAttributeNS(null, "r", strokeWidth * .35);
+  circle2.setAttributeNS(null, "fill", "white");
+  svg.appendChild(circle2);
   return svg;
 }
