@@ -22,7 +22,6 @@ function describeArc(x, y, radius, startAngle, endAngle){
   var end = polarToCartesian(x, y, radius, startAngle);
 
   var largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-console.log(startAngle, endAngle);
 
   var d = [
     "M", start.x, start.y, 
@@ -108,8 +107,12 @@ return x < 0.5
 }
 
 // Main function to create a gauge
-// type: 'arch', 'semi', 'circle'
 // Hallucinated by Luke Boland, 2025
+
+/* function moveGauge(gaugeobj, newStart, newEnd, duration, easingFunc) {
+* Animates the gauge from its current start and end angles to newStart and newEnd over duration (in seconds)
+* using the provided easing function (one of those defined above)
+*/
 
 function moveGauge(gaugeobj, newStart, newEnd, duration, easingFunc) {
   var oldStart = gaugeobj.startAngle;
@@ -189,6 +192,19 @@ function moveGauge(gaugeobj, newStart, newEnd, duration, easingFunc) {
   }, 1000 / 60);
 }
 
+/* function createGauge(parentElem, radius, start, end, min, max, color, strokeWidth, type)
+* Creates a gauge SVG element and appends it to parentElem
+* radius: radius of the gauge
+* start: starting value of the gauge
+* end: ending value of the gauge
+* min: minimum value of the gauge
+* max: maximum value of the gauge
+* color: color of the gauge arc
+* strokeWidth: width of the gauge arc
+* type: type of gauge ('arch', 'semi', 'circle')
+* Returns an object representing the gauge
+*/
+
 function createGauge(parentElem, radius, start, end, min, max, color, strokeWidth, type) {
   var gaugeobj = {};
   gaugeobj.type = type;
@@ -234,6 +250,18 @@ function createGauge(parentElem, radius, start, end, min, max, color, strokeWidt
   parentElem.appendChild(gaugeobj.svg);
   return gaugeobj;
 }
+
+/* function createGaugeSVG(centerX, centerY, radius, startAngle, endAngle, color, strokeWidth, type)
+* Creates an SVG element representing a gauge arc
+* centerX, centerY: center coordinates of the gauge
+* radius: radius of the gauge
+* startAngle: starting angle of the gauge arc
+* endAngle: ending angle of the gauge arc
+* color: color of the gauge arc
+* strokeWidth: width of the gauge arc
+* type: type of gauge ('arch', 'semi', 'circle')
+* Returns the SVG element
+*/
 
 function createGaugeSVG(centerX, centerY, radius, startAngle, endAngle, color, strokeWidth, type) {
   var pathDescription = describeArc(centerX, centerY, radius, startAngle, endAngle);
