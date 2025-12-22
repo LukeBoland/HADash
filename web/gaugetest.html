@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVGGauge Tests</title>
+    <script src="src/svgGauge.js"></script>
+    <script>
+        var test1 = null;
+        var test2 = null;
+        var test3 = null;
+        var test4 = null;
+        var test5 = null;
+        var test6 = null;
+        var test7 = null;
+        var test8 = null;
+        var test9 = null;
+        var test10 = null;
+        var test11 = null;
+        var test12 = null;
+        function PageLoad()
+        {
+            test1 = createGauge(document.getElementById("g1c"), 200, 50, 50, 0, 100, "#446688", 40, "circle");
+            test2 = createGauge(document.getElementById("g1a"), 200, 50, 50, 0, 100, "#446688", 40, "arch");
+            test3 = createGauge(document.getElementById("g1s"), 200, 50, 50, 0, 100, "#446688", 40, "semi");
+            test4 = createGauge(document.getElementById("g2c"), 200, 0, 50, 0, 100, "#446688", 40, "circle");
+            test5 = createGauge(document.getElementById("g2a"), 200, 0, 50, 0, 100, "#446688", 40, "arch");
+            test6 = createGauge(document.getElementById("g2s"), 200, 0, 50, 0, 100, "#446688", 40, "semi");
+            test7 = createGauge(document.getElementById("g3c"), 200, 25, 50, 0, 100, "#446688", 40, "circle");
+            test8 = createGauge(document.getElementById("g3a"), 200, 25, 50, 0, 100, "#446688", 40, "arch");
+            test9 = createGauge(document.getElementById("g3s"), 200, 25, 50, 0, 100, "#446688", 40, "semi");
+            test10 = createGauge(document.getElementById("g4c"), 200, 25, 100, 0, 100, "#446688", 40, "circle");
+            test11 = createGauge(document.getElementById("g4a"), 200, 25, 100, 0, 100, "#446688", 40, "arch");
+            test12 = createGauge(document.getElementById("g4s"), 200, 25, 100, 0, 100, "#446688", 40, "semi");
+        }
+    </script>
+    <style>
+
+</style>
+</head>
+<body onload="PageLoad();">
+    <table>
+        <tr>
+            <td id="g1c"></td>
+            <td id="g1a"></td>
+            <td id="g1s"></td>
+            <td>
+                <button type="button" onclick="moveGauge(test1, 0, 0, 1, easeOutCubic); moveGauge(test2, 0, 0, 1, easeOutCubic); moveGauge(test3, 0, 0, 1, easeOutCubic);">0%</button>
+                <button type="button" onclick="moveGauge(test1, 25, 25, 1, easeOutCubic); moveGauge(test2, 25, 25, 1, easeOutCubic); moveGauge(test3, 25, 25, 1, easeOutCubic);">25%</button>
+                <button type="button" onclick="moveGauge(test1, 50, 50, 1, easeOutCubic); moveGauge(test2, 50, 50, 1, easeOutCubic); moveGauge(test3, 50, 50, 1, easeOutCubic);">50%</button>
+                <button type="button" onclick="moveGauge(test1, 75, 75, 1, easeOutCubic); moveGauge(test2, 75, 75, 1, easeOutCubic); moveGauge(test3, 75, 75, 1, easeOutCubic);">75%</button>
+                <button type="button" onclick="moveGauge(test1, 100, 100, 1, easeOutCubic); moveGauge(test2, 100, 100, 1, easeOutCubic); moveGauge(test3, 100, 100, 1, easeOutCubic);">100%</button>
+            </td>
+        </tr>
+        <tr>
+            <td id="g2c"></td>
+            <td id="g2a"></td>
+            <td id="g2s"></td>
+            <td>
+                <button type="button" onclick="moveGauge(test4, 0, 0, 1, easeOutCubic); moveGauge(test5, 0, 0, 1, easeOutCubic); moveGauge(test6, 0, 0, 1, easeOutCubic);">0%</button>
+                <button type="button" onclick="moveGauge(test4, 0, 25, 1, easeOutCubic); moveGauge(test5, 0, 25, 1, easeOutCubic); moveGauge(test6, 0, 25, 1, easeOutCubic);">25%</button>
+                <button type="button" onclick="moveGauge(test4, 0, 50, 1, easeOutCubic); moveGauge(test5, 0, 50, 1, easeOutCubic); moveGauge(test6, 0, 50, 1, easeOutCubic);">50%</button>
+                <button type="button" onclick="moveGauge(test4, 0, 75, 1, easeOutCubic); moveGauge(test5, 0, 75, 1, easeOutCubic); moveGauge(test6, 0, 75, 1, easeOutCubic);">75%</button>
+                <button type="button" onclick="moveGauge(test4, 0, 100, 1, easeOutCubic); moveGauge(test5, 0, 100, 1, easeOutCubic); moveGauge(test6, 0, 100, 1, easeOutCubic);">100%</button>
+            </td>
+        </tr>
+        <tr>
+            <td id="g3c"></td>
+            <td id="g3a"></td>
+            <td id="g3s"></td>
+            <td>
+                <button type="button" onclick="moveGauge(test7, 0, 100, 1, easeOutCubic); moveGauge(test8, 0, 100, 1, easeOutCubic); moveGauge(test9, 0, 100, 1, easeOutCubic);">0%-100%</button>
+                <button type="button" onclick="moveGauge(test7, 25, 75, 1, easeOutCubic); moveGauge(test8, 25, 75, 1, easeOutCubic); moveGauge(test9, 25, 75, 1, easeOutCubic);">25%-75%</button>
+                <button type="button" onclick="moveGauge(test7, 50, 100, 1, easeOutCubic); moveGauge(test8, 50, 100, 1, easeOutCubic); moveGauge(test9, 50, 100, 1, easeOutCubic);">50%-100%</button>
+                <button type="button" onclick="moveGauge(test7, 75, 100, 1, easeOutCubic); moveGauge(test8, 75, 100, 1, easeOutCubic); moveGauge(test9, 75, 100, 1, easeOutCubic);">75%-100%</button>
+                <button type="button" onclick="moveGauge(test7, 0, 50, 1, easeOutCubic); moveGauge(test8, 0, 50, 1, easeOutCubic); moveGauge(test9, 0, 50, 1, easeOutCubic);">0%-50%</button>
+            </td>
+        </tr>
+        <tr>
+            <td id="g4c"></td>
+            <td id="g4a"></td>
+            <td id="g4s"></td>
+            <td>
+                <button type="button" onclick="moveGauge(test10, 0, 100, 1, easeOutCubic); moveGauge(test11, 0, 100, 1, easeOutCubic); moveGauge(test12, 0, 100, 1, easeOutCubic);">0%</button>
+                <button type="button" onclick="moveGauge(test10, 25, 100, 1, easeOutCubic); moveGauge(test11, 25, 100, 1, easeOutCubic); moveGauge(test12, 25, 100, 1, easeOutCubic);">25%</button>
+                <button type="button" onclick="moveGauge(test10, 50, 100, 1, easeOutCubic); moveGauge(test11, 50, 100, 1, easeOutCubic); moveGauge(test12, 50, 100, 1, easeOutCubic);">50%</button>
+                <button type="button" onclick="moveGauge(test10, 75, 100, 1, easeOutCubic); moveGauge(test11, 75, 100, 1, easeOutCubic); moveGauge(test12, 75, 100, 1, easeOutCubic);">75%</button>
+                <button type="button" onclick="moveGauge(test10, 0, 100, 1, easeOutCubic); moveGauge(test11, 0, 100, 1, easeOutCubic); moveGauge(test12, 0, 100, 1, easeOutCubic);">100%</button>
+        </tr>
+    </table>
+</body>
+</html>

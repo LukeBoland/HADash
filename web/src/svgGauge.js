@@ -141,7 +141,7 @@ function moveGauge(gaugeobj, newStart, newEnd, duration, easingFunc) {
   var startRange = newStart - oldStart;
   var endRange = newEnd - oldEnd;
   var frameArray = [];
-   for (let frame = 0; frame <= frames; frame++) {
+  for (let frame = 0; frame <= frames; frame++) {
     var progress = frame / frames;    
     frameArray.push([oldStart + easingFunc(progress) * startRange, oldEnd + easingFunc(progress) * endRange]);
   }
